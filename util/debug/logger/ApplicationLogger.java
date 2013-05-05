@@ -193,6 +193,54 @@ public class ApplicationLogger
     		);
     }
     
+    public static void logInfo(String msg)
+    {
+    	logger.info(msg);
+    }
+    
+    public static void logDebug(String msg)
+    {
+    	logger.config(msg);
+    }
+    
+    public static void logWarning(String msg)
+    {
+    	logger.warning(msg);
+    }
+    
+    public static void logError(String msg)
+    {
+    	logger.severe(msg);
+    }
+    
+    public static void logError(Exception e)
+    {
+    	String msg = e.toString()+"\n\n";
+        StackTraceElement[] stack = e.getStackTrace();
+        for (int i=0; i<stack.length; i++) {
+            msg = msg + stack[i].toString() +"\n";
+        }
+        
+        logger.severe(msg);
+    }
+    
+    public static void logFatalError(String msg)
+    {
+    	logger.severe("FATAL: "+ msg);
+    }
+    
+    public static void logFatalError(Exception e)
+    {
+    	String msg = e.toString()+"\n\n";
+        StackTraceElement[] stack = e.getStackTrace();
+        for (int i=0; i<stack.length; i++) {
+            msg = msg + stack[i].toString() +"\n";
+        }
+        
+        logger.severe(msg);
+    }
+    
+    
     /**
      * crashDump
      * 

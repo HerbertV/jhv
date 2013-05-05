@@ -20,10 +20,13 @@
  */
 package jhv.util.config;
 
+import java.awt.Image;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+
+import jhv.util.debug.logger.ApplicationLogger;
 
 /**
  * Abstract base class for configuring your application, using property files.
@@ -33,6 +36,8 @@ import java.util.Properties;
  * The User Defaults are also set in the system properties.
  * 
  * If you have no user settings you can also use only system settings.
+ * 
+ * it is also used to store global variables, like app start time and app icon.
  */
 public abstract class AbstractConfig 
 {
@@ -50,8 +55,10 @@ public abstract class AbstractConfig
 	//  Variables
 	// ============================================================================
 	
-	// Singleton instance
-	protected static AbstractConfig myInstance;
+	/**
+	 * Singleton instance
+	 */
+	protected static AbstractConfig instance;
 	
 	/**
 	 * all system wide properties.
@@ -68,7 +75,13 @@ public abstract class AbstractConfig
     /**
 	 *  Start time of the app. 
 	 */
-	public static long programStartTime = 0;
+	public static long APP_START_TIME = 0;
+	
+	/**
+	 * the apps icon.
+	 */
+	public static Image APP_ICON;
+	
 	
     
 	// ============================================================================
@@ -121,10 +134,7 @@ public abstract class AbstractConfig
             fos.close();
             
         } catch (IOException ex) {
-           //TODO
-        	// LOG.severe("Fehler beim speichern der System Properties!");
-           // LOG.severe(ApplicationLogging.generateStackTraceMsg(ex));
-            
+        	ApplicationLogger.logError(ex);
         }
     }
     
@@ -139,9 +149,7 @@ public abstract class AbstractConfig
             fos.close();
             
         } catch (IOException ex) {
-           //TODO
-        	//LOG.severe("Fehler beim speichern der User Properties!");
-            //LOG.severe(ApplicationLogging.generateStackTraceMsg(ex));
+        	ApplicationLogger.logError(ex);
         }
     }
     
