@@ -222,6 +222,32 @@ public abstract class AbstractConfig
     	return Boolean.parseBoolean(getProperty(propKey));
     }
     
+    /**
+     * 
+     * @param propKey
+     * @return
+     */
+    public String[] getStringArray(String propKey)
+    {
+    	return getProperty(propKey).split(",");
+    }
+    
+    /**
+     * 
+     * @param propKey
+     * @return
+     */
+    public int[] getIntArray(String propKey)
+    {
+    	String[] arr = getStringArray(propKey);
+    	
+    	int[] intArr = new int[arr.length];
+    	
+    	for( int i=0; i< arr.length; i++ )
+    		intArr[i] = Integer.parseInt(arr[i]);
+    	
+    	return intArr;
+    }
     
     /**
      * 
