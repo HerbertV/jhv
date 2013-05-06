@@ -21,6 +21,10 @@
 package jhv.swing.launcher;
 
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JFrame;
 
@@ -50,6 +54,9 @@ abstract public class AbstractLauncher
 	protected int defaultWidth = 600;
 	
 	protected int defaultHeight = 150;
+	
+	private Point offsetDrag;
+	private JFrame me;
 	
 	
 	// ============================================================================
@@ -129,6 +136,29 @@ abstract public class AbstractLauncher
         imgPanel.setBounds(0,0,defaultWidth,defaultHeight);
         
         this.setLocationRelativeTo(null);
+        this.me = this;
+        
+        // enable dragging
+        imgPanel.addMouseListener(new MouseAdapter(){
+        		public void mousePressed(MouseEvent e) {
+        			offsetDrag = e.getPoint();
+        		}
+        	
+        	});
+        
+        imgPanel.addMouseMotionListener(new MouseMotionAdapter(){
+				@Override
+		    	public void mouseDragged(MouseEvent e)
+		    	{
+					Point p = me.getLocation();
+					
+					p.x = e.getX() + p.x - offsetDrag.x;
+					p.y = e.getY() + p.y - offsetDrag.y;
+					
+		    		me.setLocation(p);
+		    	}
+		    	
+			});
     }
 		
 	/**

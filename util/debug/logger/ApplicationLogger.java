@@ -21,6 +21,7 @@
 package jhv.util.debug.logger;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.FileHandler;
@@ -97,6 +98,11 @@ public class ApplicationLogger
             if( handler == null ) 
             {
             	String filename = new SimpleDateFormat( "yyyy_MM_dd__HH_mm_ss" ).format(new Date(appStartupTime)) + ".log";
+            
+            	File dir = new File(path);
+            	if( !dir.exists() )
+            		dir.mkdir();
+            	
             	handler = new FileHandler(path + filename,true);
             }
             formatter = format;
@@ -133,7 +139,7 @@ public class ApplicationLogger
     	)
     {
 		if( formatter == null )
-			new SimpleFormatter();
+			formatter = new SimpleFormatter();
 		
     	return new ApplicationLogger(
     			name,
@@ -159,7 +165,7 @@ public class ApplicationLogger
     	)
     {
     	if( formatter == null )
-			new SimpleFormatter();
+			formatter = new SimpleFormatter();
 		
     	return new ApplicationLogger(
     			name, 
@@ -195,26 +201,41 @@ public class ApplicationLogger
     
     public static void logInfo(String msg)
     {
+    	if( logger == null )
+    		return;
+    	
     	logger.info(msg);
     }
     
     public static void logDebug(String msg)
     {
+    	if( logger == null )
+    		return;
+    	
     	logger.config(msg);
     }
     
     public static void logWarning(String msg)
     {
+    	if( logger == null )
+    		return;
+    	
     	logger.warning(msg);
     }
     
     public static void logError(String msg)
     {
+    	if( logger == null )
+    		return;
+    	
     	logger.severe(msg);
     }
     
     public static void logError(Exception e)
     {
+    	if( logger == null )
+    		return;
+    	
     	String msg = e.toString()+"\n\n";
         StackTraceElement[] stack = e.getStackTrace();
         for (int i=0; i<stack.length; i++) {
@@ -226,11 +247,17 @@ public class ApplicationLogger
     
     public static void logFatalError(String msg)
     {
+    	if( logger == null )
+    		return;
+    	
     	logger.severe("FATAL: "+ msg);
     }
     
     public static void logFatalError(Exception e)
     {
+    	if( logger == null )
+    		return;
+    	
     	String msg = e.toString()+"\n\n";
         StackTraceElement[] stack = e.getStackTrace();
         for (int i=0; i<stack.length; i++) {

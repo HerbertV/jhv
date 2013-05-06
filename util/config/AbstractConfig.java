@@ -21,6 +21,7 @@
 package jhv.util.config;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -101,6 +102,11 @@ public abstract class AbstractConfig
             fis.close();
             
         } catch (IOException ex) {
+        	
+        	File dir = new File("config");
+        	if( !dir.exists() )
+        		dir.mkdir();
+        	
         	this.setSystemDefaults();
         	this.saveSystem();
         }
@@ -175,7 +181,7 @@ public abstract class AbstractConfig
     	}    
         return propertiesSystem.getProperty(propKey,"").trim();
     }
-    
+        
     /**
      *
      * @param propKey
