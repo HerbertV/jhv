@@ -20,7 +20,10 @@
  */
 package jhv.util.config;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -267,6 +270,24 @@ public abstract class AbstractConfig
     public void setUserProperty(String propKey, String value)
     {
         propertiesUser.setProperty(propKey,value);
+    }
+    
+    /**
+     * getDisplayResolutions
+     * 
+     * @return
+     */
+    public static Rectangle[] getDisplayResolutions()
+    {
+    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gd = ge.getScreenDevices();
+        
+        Rectangle[] resolutions = new Rectangle[gd.length];
+        
+        for( int i = 0; i < gd.length; i++ )
+        	resolutions[i] = gd[i].getDefaultConfiguration().getBounds();
+          
+    	return resolutions;
     }
     
     /**

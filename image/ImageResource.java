@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import jhv.util.debug.logger.ApplicationLogger;
 
@@ -139,5 +140,16 @@ public class ImageResource
     	return image;
     }
 	
+    /**
+     * getImageIcon
+     * 
+     * returns the image as ImageIcon
+     * 
+     * @return
+     */
+    public ImageIcon getImageIcon()
+    {
+    	return new ImageIcon(image);
+    }
 
 }

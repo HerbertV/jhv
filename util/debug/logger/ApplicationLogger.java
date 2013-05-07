@@ -139,7 +139,7 @@ public class ApplicationLogger
     	)
     {
 		if( formatter == null )
-			formatter = new SimpleFormatter();
+			formatter = new LogFormatter();
 		
     	return new ApplicationLogger(
     			name,
@@ -165,7 +165,7 @@ public class ApplicationLogger
     	)
     {
     	if( formatter == null )
-			formatter = new SimpleFormatter();
+			formatter = new LogFormatter();
 		
     	return new ApplicationLogger(
     			name, 
@@ -206,6 +206,22 @@ public class ApplicationLogger
     	
     	logger.info(msg);
     }
+    
+    public static void newLine()
+    {
+    	if( logger == null )
+    		return;
+    	
+    	logger.info("\n");
+    }
+    
+    public static void separator()
+    {
+    	if( logger == null )
+    		return;
+    	logger.info("----------------------------------------------------------------------------");
+    }
+    
     
     public static void logDebug(String msg)
     {
@@ -301,7 +317,7 @@ public class ApplicationLogger
      * 
      * @param lvl
      */
-    public void setLevel(int lvl)
+    public static void setLevel(int lvl)
     {
     	level = lvl;
     	
@@ -338,7 +354,7 @@ public class ApplicationLogger
      * 
      * @return
      */
-    public int getLevel()
+    public static int getLevel()
     {
     	return level;
     }
