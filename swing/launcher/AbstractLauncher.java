@@ -184,5 +184,15 @@ abstract public class AbstractLauncher
 		openLauncher.dispose();
 	}
 	
+	/**
+	 * bringToFront
+	 */
+	public static void bringToFront()
+	{
+		if( openLauncher == null )
+			return;
+		
+		openLauncher.toFront();
+	}
 	
 }
