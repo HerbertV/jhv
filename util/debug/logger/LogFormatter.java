@@ -21,11 +21,10 @@
 package jhv.util.debug.logger;
 
 import java.util.logging.Formatter;
-import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * Simple formatter used by ApplicationLogger
+ * Very simple formatter used by ApplicationLogger
  */
 public class LogFormatter 
 		extends Formatter 
@@ -39,16 +38,7 @@ public class LogFormatter
 	@Override
 	public String format(LogRecord r)
 	{
-		String msg = "";
-		if( r.getLevel() != Level.INFO 
-				&& r.getLevel() != Level.CONFIG )
-			msg = "["+r.getLevel()+"]: ";
-		
-		msg += r.getMessage()
-				+"\n";
-			
-		return msg;
-				
+		return r.getMessage() +"\n";
 	}
 
 }

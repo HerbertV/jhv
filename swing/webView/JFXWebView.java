@@ -93,11 +93,10 @@ public class JFXWebView
 	 */
 	private void fxInit()
 	{
-		ApplicationLogger.newLine();
+		ApplicationLogger.separator();
 		ApplicationLogger.logInfo(
 				"JFXWebView initializes JavaFX..."
 			);
-		ApplicationLogger.separator();
 		ApplicationLogger.logInfo(
 				"JavaFX Version: " + System.getProperty("javafx.runtime.version")
 			);

@@ -60,7 +60,11 @@ public class ApplicationLogger
 	 /**
 	  * File Handler
 	  */
-	private static Handler handler;
+	private static Handler fileHandler;
+	 /**
+	  * Console Handler
+	  */
+	private static Handler consoleHandler;
 	
 	/**
 	 * Logger Formatter
@@ -95,7 +99,7 @@ public class ApplicationLogger
     	
         try {
         	
-            if( handler == null ) 
+            if( fileHandler == null ) 
             {
             	String filename = new SimpleDateFormat( "yyyy_MM_dd__HH_mm_ss" ).format(new Date(appStartupTime)) + ".log";
             
@@ -103,15 +107,23 @@ public class ApplicationLogger
             	if( !dir.exists() )
             		dir.mkdir();
             	
-            	handler = new FileHandler(path + filename,true);
+            	fileHandler = new FileHandler(path + filename,true);
             }
+            if( consoleHandler == null )
+            {
+            	consoleHandler = new ConsoleHandler();
+            }
+            
             formatter = format;
-        	handler.setFormatter(formatter);
-        
+            fileHandler.setFormatter(formatter);
+            consoleHandler.setFormatter(formatter);
+            
             if( logger == null ) 
             {
                 logger = Logger.getLogger(name);
-                logger.addHandler(handler);
+                logger.setUseParentHandlers(false);
+                logger.addHandler(fileHandler);
+                logger.addHandler(consoleHandler);
             }
             setLevel(level);
             
@@ -236,7 +248,7 @@ public class ApplicationLogger
     	if( logger == null )
     		return;
     	
-    	logger.warning(msg);
+    	logger.warning("[WARNING]:" + msg);
     }
     
     public static void logError(String msg)
@@ -244,7 +256,7 @@ public class ApplicationLogger
     	if( logger == null )
     		return;
     	
-    	logger.severe(msg);
+    	logger.severe("[ERROR]:" + msg);
     }
     
     public static void logError(Exception e)
@@ -258,7 +270,7 @@ public class ApplicationLogger
             msg = msg + stack[i].toString() +"\n";
         }
         
-        logger.severe(msg);
+        logError(msg);
     }
     
     public static void logFatalError(String msg)
@@ -266,7 +278,7 @@ public class ApplicationLogger
     	if( logger == null )
     		return;
     	
-    	logger.severe("FATAL: "+ msg);
+    	logger.severe("[FATAL ERROR]: "+ msg);
     }
     
     public static void logFatalError(Exception e)
@@ -280,7 +292,7 @@ public class ApplicationLogger
             msg = msg + stack[i].toString() +"\n";
         }
         
-        logger.severe(msg);
+        logFatalError(msg);
     }
     
     
@@ -345,6 +357,7 @@ public class ApplicationLogger
     			logger.setLevel(Level.SEVERE); 
     			break;
     		default:
+    			logger.setLevel(Level.SEVERE); 
     			break;
     	}
     }
