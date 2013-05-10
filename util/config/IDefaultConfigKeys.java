@@ -62,6 +62,13 @@ public interface IDefaultConfigKeys
 	 * Enables Logging with ApplicationLogger.
 	 */
 	public static final String KEY_IS_LOGGER_ENABLED = "app.debugging.isLoggerEnabled";
-		
+	
+	/**
+	 * Key for Properties.
+	 * 
+	 * Enables Logging with ApplicationLogger.
+	 */
+	public static final String KEY_IS_FIRST_LAUNCH = "app.isFirstLaunch";
+	
 	
 }

@@ -194,5 +194,5 @@ abstract public class AbstractLauncher
 		
 		openLauncher.toFront();
 	}
-	
+		
 }

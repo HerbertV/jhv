@@ -44,6 +44,7 @@ import jhv.util.debug.logger.ApplicationLogger;
  * it is also used to store global variables, like app start time and app icon.
  */
 public abstract class AbstractConfig 
+		implements IDefaultConfigKeys
 {
 	// ============================================================================
 	//  Constants
@@ -290,6 +291,61 @@ public abstract class AbstractConfig
     	return resolutions;
     }
     
+    /**
+	 * getAppTitle
+	 * 
+	 * @return
+	 */
+	public String getAppTitle()
+	{
+		return this.getString(KEY_APPTITLE);
+	}
+	
+	/**
+	 * getAppIcon 
+	 * 
+	 * @return app icons path
+	 */
+	public String getAppIcon()
+	{
+		return this.getString(KEY_APPICON);
+	}
+	
+	/**
+	 * getDebugLevel
+	 * 
+	 * @return
+	 */
+	public int getDebugLevel()
+	{
+		return this.getInt(KEY_DEBUG_LEVEL);
+	}
+	
+	/**
+	 * isLoggerEnabled
+	 * 
+	 * @return
+	 */
+	public boolean isLoggerEnabled()
+	{
+		return this.getBoolean(KEY_IS_LOGGER_ENABLED);
+	}
+	
+	/**
+	 * isFirstLaunch
+	 * 
+	 * @return
+	 */
+	public boolean isFirstLaunch()
+	{
+		return this.getBoolean(KEY_IS_FIRST_LAUNCH);
+	}
+    
+	public void setFirstLaunchDone()
+	{
+		//TODO
+	}
+	
     /**
      * 
      */
