@@ -20,9 +20,13 @@
  */
 package jhv.swing.webView;
 
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Window;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -30,8 +34,10 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import static javafx.concurrent.Worker.State.FAILED;
 
@@ -56,7 +62,11 @@ public class JFXWebView
 	
 	private WebEngine webEngine;
 	
+	private Window frameOrDialog;
 	
+	private String titlePrefix;
+	
+	private JLabel statusLabel;
 	
 	// ============================================================================
 	//  Constructors
@@ -69,21 +79,13 @@ public class JFXWebView
 	{
 		super();
 		
-		//init from the java fx thread
-		Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-            	fxInit();
-            	fxInitErrorHandler();
-            }
-       });
-		
+		this.titlePrefix = "";
 	}
 	
 	// ============================================================================
 	//  Functions
 	// ============================================================================
-		
+	
 	/**
 	 * initFX
 	 * 
@@ -155,6 +157,111 @@ public class JFXWebView
 					}
 			});
 	}
+	
+	/**
+	 * inits all callbacks to swing.
+	 */
+	private void fxInitCallbacks()
+	{
+		webEngine.titleProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(
+						ObservableValue<? extends String> observable, 
+						String oldValue, 
+						final String newValue
+					)
+				{
+					SwingUtilities.invokeLater(new Runnable() {
+							@Override 
+							public void run() 
+							{
+								if( frameOrDialog == null )
+									return;
+								
+								String suffix = newValue;
+								
+								if( newValue == null )
+									suffix = "Verbinde ...";
+									
+								if( frameOrDialog instanceof Dialog )
+								{
+									((Dialog)frameOrDialog).setTitle(titlePrefix + suffix);
+									
+								} else if( frameOrDialog instanceof Frame ) {
+									((Frame)frameOrDialog).setTitle(titlePrefix + suffix);
+								}
+							}
+						});
+				}
+        	});
+		
+		webEngine.setOnStatusChanged(new EventHandler<WebEvent<String>>() {
+				@Override 
+				public void handle(final WebEvent<String> event) 
+				{
+					SwingUtilities.invokeLater(new Runnable() {
+							@Override 
+							public void run() 
+							{
+								if( statusLabel == null )
+									return;
+								
+								statusLabel.setText(event.getData());
+							}
+						});
+				}
+        	});
+        
+		
+	}
+	
+	/**
+	 * createJavaFX.
+	 * 
+	 * must be called from JRE thread.
+	 * 
+	 * initializes all javaFX callbacks and handlers.
+	 * call it after setup is done. 
+	 */
+	public void createJavaFX()
+	{
+		//init from the java fx thread
+		Platform.runLater(new Runnable() {
+				@Override
+		        public void run() {
+					fxInit();
+		            fxInitErrorHandler();
+		            fxInitCallbacks();
+		        }
+			});
+	}
+	
+	/**
+	 * setupWindowTitle
+	 * 
+	 * must be called from JRE thread. 
+	 * 
+	 * @param window either a frame or dialog
+	 * @param titleprefix (optional)
+	 */
+	public void setupWindowTitle(
+			Window window, 
+			String titleprefix
+		)
+	{
+		this.frameOrDialog = window;
+		
+		if( titleprefix != null ) 
+			this.titlePrefix = titleprefix;
+	}
+	
+	public void setupStatusLabel(
+			JLabel lbl
+		)
+	{
+		this.statusLabel = lbl;
+	}
+	
 	
 	/**
 	 * openURL
