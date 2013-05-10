@@ -331,6 +331,9 @@ public class ApplicationLogger
      */
     public static void setLevel(int lvl)
     {
+    	if( logger == null )
+    		return;
+    	
     	level = lvl;
     	
     	switch( level ) 

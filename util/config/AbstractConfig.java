@@ -343,7 +343,8 @@ public abstract class AbstractConfig
     
 	public void setFirstLaunchDone()
 	{
-		//TODO
+		this.setSystemProperty(KEY_IS_FIRST_LAUNCH, "false");
+		this.saveSystem();
 	}
 	
     /**
