@@ -18,25 +18,19 @@
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/mit-license.php
  */
-package jhv;
+package jhv.component;
 
 /**
- * Interface for java.awt.Components that are configurable with 
- * jhv.util.conf.AbstractConfig.
- * 
- * Configurable mean for e.g. storing/restoring a components size
- * if it is resizeable.
+ * Interface for awt.components that load
+ * their labels from a Properties resource file.
  */
-public interface IConfigurableComponent 
+public interface ILabeledComponent 
 {
 	/**
-	 * sets the component from the config file.
+	 * loads the labels.
+	 * 
+	 * should be called by constructor.
 	 */
-	public void applyConfig();
-	
-	/**
-	 * stores the component in the config file.
-	 */
-	public void saveConfig();
+	public void loadLabels();
 	
 }

@@ -347,6 +347,16 @@ public abstract class AbstractConfig
 		this.saveSystem();
 	}
 	
+	/**
+	 * getLanguage
+	 * 
+	 * @return
+	 */
+	public String getLanguage()
+	{
+		return this.getString(KEY_LANGUAGE);
+	}
+	
     /**
      * 
      */
