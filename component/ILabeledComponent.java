@@ -30,6 +30,27 @@ public interface ILabeledComponent
 	 * loads the labels.
 	 * 
 	 * should be called by constructor.
+	 * 
+	 * 
+	 * Code sample:
+	 * 
+	 *	protected LabelResource labelResource;
+	 * 	
+	 * 	public void loadLabels()
+	 * 	{
+	 *  	GenesisConfig conf = GenesisConfig.getInstance();
+	 *
+	 * 		labelResource = new LabelResource(
+	 * 				this,
+	 * 				conf.getLanguage(), 
+	 * 				"labels"
+	 *			);
+	 *	}
+	 *
+	 * assign label:
+	 * 	
+	 * 	labelResource.getProperty("myPropname", "fallback");
+	 * 
 	 */
 	public void loadLabels();
 	
