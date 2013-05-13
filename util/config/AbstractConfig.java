@@ -130,6 +130,7 @@ public abstract class AbstractConfig
             
         } catch (IOException ex) {
         	this.setUserDefaults();
+        	this.saveUser();
         }
     }
     
@@ -341,6 +342,9 @@ public abstract class AbstractConfig
 		return this.getBoolean(KEY_IS_FIRST_LAUNCH);
 	}
     
+	/**
+	 * setFirstLaunchDone
+	 */
 	public void setFirstLaunchDone()
 	{
 		this.setSystemProperty(KEY_IS_FIRST_LAUNCH, "false");
@@ -368,7 +372,9 @@ public abstract class AbstractConfig
 	protected abstract void setUserDefaults();
     
     /**
+     * resetUser
      * 
+     * in most cases calls only setUserDefaults and saveUser
      */
     public abstract void resetUser();
     
