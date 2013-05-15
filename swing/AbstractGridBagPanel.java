@@ -23,11 +23,15 @@ package jhv.swing;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -35,6 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 
 
 /**
@@ -293,7 +298,10 @@ public abstract class AbstractGridBagPanel
 	 * @param step
 	 * @param gridx
 	 * @param gridy
-	 * @return
+	 * 
+	 * @return Array of JComponents, 
+	 * 		[0] = Label 
+	 * 		[1] = Spinner
 	 */
 	protected JComponent[] addLabeledNumericSpinner( 
 			String label, 
@@ -325,6 +333,74 @@ public abstract class AbstractGridBagPanel
 		
 		comps[1] = new JSpinner(model);
 		this.add(comps[1], this.gbc);
+		
+		return comps;
+	}
+	
+	
+	/**
+	 * addFileChooser
+	 * 
+	 * adds a Label, TextField and button [...]
+	 * allows only the selection of one file
+	 * 
+	 * @param label
+	 * @param val
+	 * @param gridx
+	 * @param gridy
+	 * 
+	 * @return Array of JComponents, 
+	 * 		[0] = Label 
+	 * 		[1] = TextField
+	 * 		[2] = button
+	 */
+	protected JComponent[] addLabeledFileChooser( 
+			String label, 
+			String val,
+			int gridx, 
+			int gridy,
+			final String path,
+			final FileFilter filter
+		)
+	{
+		JComponent[] comps = new JComponent[3];
+		
+		this.gbc.gridwidth = 2;
+		this.gbc.gridx = gridx;
+		this.gbc.gridy = gridy;
+		
+		comps[0] = new JLabel(label);
+		this.add(comps[0] , this.gbc);
+		
+		this.gbc.gridwidth = 1;
+		this.gbc.gridy = gridy + 1;
+		
+		final JTextField txt = new JTextField();
+		comps[1] = txt;
+		this.add(txt, this.gbc);
+		txt.setText(val);
+		
+		this.gbc.gridx = gridx + 1;
+		
+		final JButton btn = new JButton();
+		comps[2] = btn;
+		this.add(btn, this.gbc);
+		btn.setText("...");
+		
+		btn.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent ae) 
+				{
+					JFileChooser chooser = new JFileChooser(path);
+					chooser.setMultiSelectionEnabled(false);
+					chooser.setFileFilter(filter);
+					int result = chooser.showOpenDialog(AbstractGridBagPanel.this);
+					
+					if( result == JFileChooser.APPROVE_OPTION )
+						txt.setText(chooser.getSelectedFile().getName());
+				}
+			});
+		
 		
 		return comps;
 	}
