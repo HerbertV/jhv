@@ -204,6 +204,9 @@ public abstract class AbstractConfig
      */
     public int getInt(String propKey)
     {
+    	if( getProperty(propKey) == "" )
+    		return 0;
+    	
     	return  Integer.parseInt(getProperty(propKey));
     }
     
