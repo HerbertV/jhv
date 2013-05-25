@@ -20,15 +20,19 @@
  */
 package jhv.swing;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -38,6 +42,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 
@@ -405,4 +410,60 @@ public abstract class AbstractGridBagPanel
 		return comps;
 	}
 	
+	
+	/**
+	 * addLabeledColorPicker
+	 * 
+	 * creates a color picker with label.
+	 * 
+	 * @param label
+	 * @param dlgTitle
+	 * @param val
+	 * @param gridx
+	 * @param gridy
+	 * 
+	 * @return Array of JComponents, 
+	 * 		[0] = Label 
+	 * 		[1] = colorpicker (JPanel)
+	 */
+	protected JComponent[] addLabeledColorPicker( 
+			String label, 
+			final String dlgTitle,
+			Color val,
+			int gridx, 
+			int gridy
+		)
+	{
+		JComponent[] comps = new JComponent[2];
+		
+		this.gbc.gridwidth = 1;
+		this.gbc.gridx = gridx;
+		this.gbc.gridy = gridy;
+
+		comps[0] = new JLabel(label);
+		this.add(comps[0] , this.gbc);
+		
+		this.gbc.gridx = gridx + 1;
+		
+		final JPanel pickPanel = new JPanel();
+		pickPanel.setSize(28, 20);
+		pickPanel.setBorder(new LineBorder(new java.awt.Color(0,0,0), 1, false));
+		pickPanel.setBackground(val);
+		pickPanel.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent evt) {
+					Color newColor =  JColorChooser.showDialog(
+							AbstractGridBagPanel.this, 
+							dlgTitle,
+							pickPanel.getBackground()
+						);
+					if( newColor != null ) 
+						pickPanel.setBackground(newColor);
+				}
+			});
+		
+		comps[1] = pickPanel;
+		this.add(comps[1], this.gbc);
+		
+		return comps;
+	}
 }

@@ -20,6 +20,7 @@
  */
 package jhv.util.config;
 
+import java.awt.Color;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -94,6 +95,8 @@ public abstract class AbstractConfig
 	// ============================================================================
 		
     /**
+     * loadSystem
+     * 
      * loads the system config file
      */
     protected void loadSystem()
@@ -117,6 +120,8 @@ public abstract class AbstractConfig
     }
     
     /**
+     * loadUser
+     * 
      * loads the user config file
      */
 	protected void loadUser()
@@ -135,6 +140,8 @@ public abstract class AbstractConfig
     }
     
 	/**
+	 * saveSystem
+	 * 
 	 * saves the system file
 	 */
     public void saveSystem()
@@ -150,6 +157,8 @@ public abstract class AbstractConfig
     }
     
     /**
+     * saveUser
+     * 
      * Saves the user file
      */
     public void saveUser()
@@ -165,6 +174,8 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getProperty
+     * 
      * Basic property getter
      * called by all public getters.
      * 
@@ -172,6 +183,7 @@ public abstract class AbstractConfig
      * and then system properties for the given key.
      * 
      * @param propKey
+     * 
      * @return
      */
     private String getProperty(String propKey)
@@ -188,8 +200,10 @@ public abstract class AbstractConfig
     }
         
     /**
-     *
+     * getString
+     * 
      * @param propKey
+     * 
      * @return the value as a String
      */
     public String getString(String propKey)
@@ -198,8 +212,10 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getInt
      * 
      * @param propKey
+     * 
      * @return the value as int
      */
     public int getInt(String propKey)
@@ -211,8 +227,10 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getFloat
      * 
      * @param propKey
+     * 
      * @return the value as float
      */
     public float getFloat(String propKey)
@@ -221,8 +239,10 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getBoolean
      * 
      * @param propKey
+     * 
      * @return the value as boolean
      */
     public boolean getBoolean(String propKey)
@@ -231,8 +251,10 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getStringArray
      * 
      * @param propKey
+     * 
      * @return
      */
     public String[] getStringArray(String propKey)
@@ -241,8 +263,10 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getIntArray
      * 
      * @param propKey
+     * 
      * @return
      */
     public int[] getIntArray(String propKey)
@@ -258,6 +282,33 @@ public abstract class AbstractConfig
     }
     
     /**
+     * getColor
+     * 
+     * @param propKey
+     * 
+     * @return
+     */
+    public Color getColor(String propKey)
+    {
+    	return Color.decode("#"+getProperty(propKey));
+    }
+    
+    /**
+     * colorToHexString
+     * 
+     * @param c
+     * 
+     * @return
+     */
+    public static String colorToHexString(Color c)
+    {
+    	String rgb = Integer.toHexString(c.getRGB());
+    	// cut off the first 2 digits since we have a 8 digit string.
+    	return rgb.substring(2, rgb.length());
+    }
+    
+    /**
+     * setSystemProperty
      * 
      * @param propKey
      * @param value
@@ -268,6 +319,7 @@ public abstract class AbstractConfig
     }
     
     /**
+     * setUserProperty
      * 
      * @param propKey
      * @param value
