@@ -45,6 +45,9 @@ public class JXScriptFactory
 	//  Variables
 	// ============================================================================
 	
+	/**
+	 * the script engine
+	 */
 	private ScriptEngine engine;
 
 	
@@ -163,7 +166,14 @@ public class JXScriptFactory
 	/**
 	 * loadScriptResource
 	 * 
-	 * loads a script from the jar resource or from an external location
+	 * loads a script from the jar resource or from an external location.
+	 *
+	 * In most cases you will try to access a file from jar resource
+	 * first. In the case of scripting it is more suitable to access
+	 * the external file first since we want to give the user the
+	 * possibility to customize his/her scripts.
+	 * 
+	 * So are script inside a jar is just for fall back.
 	 * 
 	 * @param filename
 	 */
@@ -173,24 +183,23 @@ public class JXScriptFactory
 		try 
 		{
 			br = new BufferedReader(new InputStreamReader(
-					getClass().getClassLoader().getResourceAsStream(filename),
+					new FileInputStream(filename),
 					charset
 				));
-
+		
 		} catch( IOException | NullPointerException e1 ) {
-			
-			// no resource found try to load from file
+			// no file found try to load from jar
 			try 
 			{
 				br = new BufferedReader(new InputStreamReader(
-						new FileInputStream(filename),
+						getClass().getClassLoader().getResourceAsStream(filename),
 						charset
 					));
 				
 			} catch( Exception e2 ) {
 				// both loading tries failed
 				// so no script file is available
-				ApplicationLogger.logError("Script resource " + filename + " not found!");
+				ApplicationLogger.logError("Script " + filename + " not found!");
 				return null;
 			}
 		}

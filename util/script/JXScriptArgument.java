@@ -20,100 +20,68 @@
  */
 package jhv.util.script;
 
-import java.nio.charset.Charset;
-
-import javax.script.ScriptEngine;
-
 /**
- * AbstractJXScript
+ * JXScriptArgument 
  * 
- * abstract class for a script executed by javax.script API
+ * @see JXJavaScriptMethod
+ *
+ * @param <T>
  */
-public abstract class AbstractJXScript 
+public class JXScriptArgument<T>
 {
 	// ============================================================================
 	//  Variables
 	// ============================================================================
 	
 	/**
-	 * the factory.
+	 * the value of the argument
 	 */
-	protected JXScriptFactory scriptFactory;
+	private T value;
 	
 	/**
-	 * the script engine.
+	 * the name used inside the script
 	 */
-	protected ScriptEngine scriptEngine;
+	private String name;
 	
-	/**
-	 * script code to invoke
-	 */
-	protected String scriptCode;
 	
 	// ============================================================================
-	//  Constructors
+	//  Consturctors
 	// ============================================================================
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
-	 * @param sf
+	 * @param name
+	 * @param val
 	 */
-	public AbstractJXScript(JXScriptFactory sf) 
+	public JXScriptArgument(String name, T val) 
 	{
-		this.scriptFactory = sf;
-		this.scriptEngine = sf.getEngine();
+		this.name = name;
+		this.value = val;
 	}
+
 	
 	// ============================================================================
 	//  Functions
 	// ============================================================================
-
+	
 	/**
-	 * getScriptCode
+	 * getValue
 	 * 
 	 * @return
 	 */
-	public String getScriptCode()
+	public T getValue()
 	{
-		return this.scriptCode;
+		return value;
 	}
 	
 	/**
-	 * injectScriptCode
+	 * getName
 	 * 
-	 * @param code
+	 * @return
 	 */
-	public void injectScriptCode(String code)
+	public String getName()
 	{
-		this.scriptCode = code;
+		return name;
 	}
-	
-	/**
-	 * loadScriptCode
-	 * 
-	 * @param filename
-	 */
-	public void loadScriptCode(String filename)
-	{
-		this.scriptCode = this.scriptFactory.loadScriptResource(
-				filename, 
-				Charset.defaultCharset().name()
-			);
-	}
-	
-	/**
-	 * toString
-	 */
-	public String toString()
-	{
-		return  this.getClass().getSimpleName() 
-				+": " 
-				+ scriptFactory.getEngineName()
-				+ " " 
-				+ scriptFactory.getEngineVersion()
-				+"\n"
-				+ this.scriptCode;
-	}
-	
 }

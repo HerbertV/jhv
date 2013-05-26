@@ -35,7 +35,6 @@ public class SimpleScriptSample
 			this.scriptEngine.eval(scriptCode);
 			Invocable inv = (Invocable) scriptEngine;
 			Object obj = scriptEngine.get("obj");
-				
 			int c = new Double((double) inv.invokeMethod(obj, "calc", 1,2)).intValue();
 			System.out.println("SimpleScriptSample -- calculated by script c:"+ c );
 		
