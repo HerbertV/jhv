@@ -118,23 +118,24 @@ public class LabelResource
 	private void loadLabels(String filename)
 	{
 		try 
-    	{
-    		this.load(
-            		getClass().getClassLoader().getResourceAsStream(filename)
-            	);
-            
-        } catch( IOException | NullPointerException e1 ) {
-        	// no resource found try to load from file
-        	try {
-        		FileInputStream fis = new FileInputStream(filename);
-        		this.load(fis);
-        		fis.close();
+		{
+			this.load(
+					getClass().getClassLoader().getResourceAsStream(filename)
+				);
+
+		} catch( IOException | NullPointerException e1 ) {
+			// no resource found try to load from file
+			try 
+			{
+				FileInputStream fis = new FileInputStream(filename);
+				this.load(fis);
+				fis.close();
         		
-        	} catch( Exception e2 ) {
-        		// both loading tries failed
-        		// so no property file is available
-        		ApplicationLogger.logError("LabelResource " + filename + " not found!");
-        	}
-        }
+			} catch( Exception e2 ) {
+				// both loading tries failed
+				// so no property file is available
+				ApplicationLogger.logError("LabelResource " + filename + " not found!");
+			}
+		}
 	}
 }
