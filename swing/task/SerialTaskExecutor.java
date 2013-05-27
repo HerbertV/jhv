@@ -80,7 +80,15 @@ public class SerialTaskExecutor
 	 */
 	private boolean continueOnException;
 	
-	private boolean onShutdown;
+	/**
+	 * 
+	 */
+	private boolean onShutdown = false;
+	
+	/**
+	 * true as long the executor does something
+	 */
+	private boolean runs = false;
 	
 	// ============================================================================
 	//  Constructors
@@ -95,14 +103,18 @@ public class SerialTaskExecutor
 	{
 		this.executor = Executors.newSingleThreadExecutor();
 		this.continueOnException = continueOnException;
-		this.onShutdown = false;
 	}
 
 	
 	// ============================================================================
 	//  Functions
 	// ============================================================================
-		
+	
+	public boolean isRunning()
+	{
+		return this.runs;
+	}
+	
 	/**
 	 * setFinishedRunnable
 	 * 
@@ -134,6 +146,7 @@ public class SerialTaskExecutor
 		queue.offer(new Runnable() {
 				public void run() 
 				{
+					runs = true;
 					try 
 					{
 						r.run();
@@ -171,7 +184,12 @@ public class SerialTaskExecutor
 	protected synchronized void scheduleNext() 
 	{
 		if( this.onShutdown )
+		{
+			// reset for the next use
+			this.onShutdown = false;
+			this.runs = false;
 			return;
+		}
 		
 		currentRunnable = queue.poll();
 		
@@ -182,6 +200,8 @@ public class SerialTaskExecutor
 			// we are done
 			if( finishedRunnable != null )
 				executor.execute(finishedRunnable);
+			
+			this.runs = false;
 		}
 	}
 }
