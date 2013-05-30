@@ -20,7 +20,6 @@
  */
 package jhv.component;
 
-import java.awt.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -81,15 +80,15 @@ public class LabelResource
 	
 	/**
 	 * Constructor 2.
-	 * can be used to load a component specific label file.
+	 * can be used to load a Object specific label file.
 	 * 
-	 * @param c
+	 * @param o
 	 * @param locale 
 	 * 		locale string e.g. de_DE
 	 * @param basePath
 	 */
 	public LabelResource(
-			Component c, 
+			Object o, 
 			String locale, 
 			String basePath
 		) 
@@ -100,7 +99,7 @@ public class LabelResource
 				+ "/"
 				+ locale
 				+ "/"
-				+ c.getClass().getName()
+				+ o.getClass().getName()
 				+ EXTENSION;
 		
 		this.loadLabels(filename);
