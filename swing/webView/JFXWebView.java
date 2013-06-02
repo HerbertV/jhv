@@ -282,8 +282,7 @@ public class JFXWebView
 				{
 		            webEngine.load(new URL(url).toExternalForm());
 		        } catch( MalformedURLException e ) {
-		             // TODO Dialog and Log
-		        	System.out.println(e.toString());
+		             ApplicationLogger.logError(e);
 		        }
 			}
         });
