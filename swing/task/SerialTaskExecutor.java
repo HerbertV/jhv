@@ -26,6 +26,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import jhv.util.debug.logger.ApplicationLogger;
@@ -81,11 +82,6 @@ public class SerialTaskExecutor
 	private boolean continueOnException;
 	
 	/**
-	 * 
-	 */
-	private boolean onShutdown = false;
-	
-	/**
 	 * true as long the executor does something
 	 */
 	private boolean runs = false;
@@ -110,7 +106,7 @@ public class SerialTaskExecutor
 	//  Functions
 	// ============================================================================
 	
-	public boolean isRunning()
+	public synchronized boolean isRunning()
 	{
 		return this.runs;
 	}
@@ -120,7 +116,7 @@ public class SerialTaskExecutor
 	 * 
 	 * @param r
 	 */
-	public void setFinishedRunnable(Runnable r)
+	public synchronized void setFinishedRunnable(Runnable r)
 	{
 		this.finishedRunnable = r;
 	}
@@ -130,7 +126,7 @@ public class SerialTaskExecutor
 	 * 
 	 * @param r
 	 */
-	public void setErrorRunnable(Runnable r)
+	public synchronized void setErrorRunnable(Runnable r)
 	{
 		this.errorRunnable = r;
 	}
@@ -150,24 +146,18 @@ public class SerialTaskExecutor
 					try 
 					{
 						r.run();
-						
 						// to fire up the exception if there was one.
 						if( r instanceof SwingWorker )
 							((SwingWorker<?,?>)r).get();
-						
 						
 					} catch( Exception e ) {
 						ApplicationLogger.logError(e);
 						
 						if( !continueOnException )
 						{
-							// clear remaining queue and add callback
+							// clear remaining queue and shutdown
 							queue.clear();
-							if( errorRunnable != null )
-								executor.execute(errorRunnable);
-							
-							SerialTaskExecutor.this.onShutdown = true;
-							executor.shutdown();
+							exitWithErrorRunnable();
 						}
 					}
 					scheduleNext();
@@ -183,25 +173,52 @@ public class SerialTaskExecutor
 	 */
 	protected synchronized void scheduleNext() 
 	{
-		if( this.onShutdown )
-		{
-			// reset for the next use
-			this.onShutdown = false;
-			this.runs = false;
-			return;
-		}
-		
 		currentRunnable = queue.poll();
 		
-		if( currentRunnable != null ) 
+		if( currentRunnable != null )
 		{
 			executor.execute(currentRunnable);
 		} else {
-			// we are done
-			if( finishedRunnable != null )
-				executor.execute(finishedRunnable);
-			
-			this.runs = false;
+			exitWithFinishedRunnable();
 		}
 	}
+	
+	/**
+	 * exitWithFinishedRunnable
+	 */
+	protected synchronized void exitWithFinishedRunnable()
+	{
+		try 
+		{
+			// we need to wait a bit since otherwise
+			// the finishedRunnable makes trouble.
+			Thread.sleep(50);
+		} catch( InterruptedException e ) {
+			e.printStackTrace();
+		}
+		
+		if( finishedRunnable != null )
+			SwingUtilities.invokeLater(finishedRunnable);
+	
+		this.runs = false;
+	}
+	
+	/**
+	 * exitWithErrorRunnable
+	 */
+	protected synchronized void exitWithErrorRunnable()
+	{
+		try 
+		{
+			Thread.sleep(50);
+		} catch( InterruptedException e ) {
+			e.printStackTrace();
+		}
+		
+		if( errorRunnable != null )
+			SwingUtilities.invokeLater(errorRunnable);
+	
+		this.runs = false;
+	}
+	
 }
