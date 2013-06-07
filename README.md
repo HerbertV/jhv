@@ -84,7 +84,7 @@ A very simple application logger.
 
 A simple javax.script API Wrapper. Designed for JavaScript (Mozilla Rhino), but extendable.
 
-See (SimpleScriptSample) [https://github.com/HerbertV/jhv/blob/master/util/script/SimpleScriptSample.java].
+See [jhv.util.script.SimpleScriptSample](https://github.com/HerbertV/jhv/blob/master/util/script/SimpleScriptSample.java).
 
 Sample for using JXJavaScriptMethod:
 
