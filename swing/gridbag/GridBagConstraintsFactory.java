@@ -347,6 +347,27 @@ public class GridBagConstraintsFactory
 		addHorizontalSeparator(CURRENT);
 	}
 	
+	
+	/**
+	 * addComponent
+	 * 
+	 * adds a custom jcomponent.
+	 * 
+	 * @param c
+	 * @param gridx
+	 * @param gridy
+	 * @param gridw
+	 */
+	public void addComponent(JComponent c, 
+			int gridx, 
+			int gridy,
+			int gridw
+		)
+	{
+		updateGridCoords(gridx,gridy,gridw);
+		parent.add(c, this.gbc);
+	}
+	
 	/**
 	 * addLabel
 	 * 
@@ -385,6 +406,44 @@ public class GridBagConstraintsFactory
 		parent.add(lbl, this.gbc);
 		
 		return lbl;
+	}
+	
+	/**
+	 * addButton
+	 * 
+	 * @param label
+	 * @param gridx
+	 * @param gridy
+	 * @param gridw
+	 * 
+	 * @return
+	 */
+	public JButton addButton(
+			String label, 
+			int gridx, 
+			int gridy,
+			int gridw
+		)
+	{
+		updateGridCoords(gridx,gridy,gridw);
+		
+		JButton btn = new JButton(label);
+		
+		Dimension d = btn.getPreferredSize();
+		d.height = DEFAULT_COMPONENT_HEIGHT -2;
+		btn.setPreferredSize(d);
+		
+		d = btn.getMaximumSize();
+		d.height = DEFAULT_COMPONENT_HEIGHT -2;
+		btn.setMaximumSize(d);
+		
+		d = btn.getMinimumSize();
+		d.height = DEFAULT_COMPONENT_HEIGHT -2;
+		btn.setMinimumSize(d);
+		
+		parent.add(btn, this.gbc);
+		
+		return btn;
 	}
 	
 	/**
