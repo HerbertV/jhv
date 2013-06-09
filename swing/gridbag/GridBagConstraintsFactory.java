@@ -262,6 +262,18 @@ public class GridBagConstraintsFactory
 	}
 	
 	/**
+	 * lastX
+	 * 
+	 * @return new gridx value
+	 */
+	public int lastX()
+	{
+		this.gbc.gridx = gridWidth -1;
+		
+		return this.gbc.gridx;
+	}
+	
+	/**
 	 * addInfoPanel
 	 * 
 	 * Helper for initializing an info label with titled border

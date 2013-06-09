@@ -53,7 +53,7 @@ import jhv.util.debug.logger.ApplicationLogger;
  * 		//don't forget to return a value
  * }
  * 
- * @param <T extends Object>
+ * @param <T extends Object> return type
  */
 public class JXJavaScriptMethod<T extends Object>
 		extends AbstractJXScript 
@@ -136,10 +136,12 @@ public class JXJavaScriptMethod<T extends Object>
 	 * 
 	 * @param arguments can be null
 	 * @return
+	 * 
+	 * @throws ScriptException
 	 */
 	public T invoke( 
 			ArrayList<JXScriptArgument<?>> arguments
-		)
+		) throws ScriptException
 	{
 		try 
 		{
@@ -171,6 +173,7 @@ public class JXJavaScriptMethod<T extends Object>
 			
 		} catch( ScriptException e) {
 			ApplicationLogger.logError(e);
+			throw new ScriptException(e);
 		} catch( NoSuchMethodException e ) {
 			//nothing to do since we generate the method
 		}
@@ -186,11 +189,12 @@ public class JXJavaScriptMethod<T extends Object>
 	 * @param arguments can be null
 	 * 
 	 * @return
+	 * @throws ScriptException 
 	 */
 	public T invoke( 
 			String codeSnippet,
 			ArrayList<JXScriptArgument<?>> arguments
-		)
+		) throws ScriptException
 	{
 		this.scriptCode = getMethodHeader(arguments)
 				+ codeSnippet
