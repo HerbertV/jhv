@@ -344,11 +344,11 @@ public class ApplicationLogger
     		case DebugLevel.ALL:
     			logger.setLevel(Level.ALL); 
     			break;
-    		case DebugLevel.INFO:
-    			logger.setLevel(Level.INFO); 
-    			break;
     		case DebugLevel.DEBUG:
     			logger.setLevel(Level.CONFIG); 
+    			break;
+    		case DebugLevel.INFO:
+    			logger.setLevel(Level.INFO); 
     			break;
     		case DebugLevel.WARNING:
     			logger.setLevel(Level.WARNING); 

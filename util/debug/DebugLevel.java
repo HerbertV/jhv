@@ -30,9 +30,9 @@ public class DebugLevel
 	
 	public static final int ALL = 1;
 	
-	public static final int INFO = 2;
+	public static final int DEBUG = 2;
 	
-	public static final int DEBUG = 3;
+	public static final int INFO = 3;
 	
 	public static final int WARNING = 4;
 	

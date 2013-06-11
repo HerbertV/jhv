@@ -46,7 +46,7 @@ public class PathCreator
 		for( int i=0; i< arr.length; i++ )
 		{
 			Files.createDirectories(Paths.get(arr[i]));
-			ApplicationLogger.logInfo("PathCreator: "+ arr[i]);
+			ApplicationLogger.logDebug("PathCreator: "+ arr[i]);
 		}
 	}
 

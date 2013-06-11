@@ -159,7 +159,7 @@ public class JXScriptFactory
 				+ "Language: " + getLanguageName() + " " + getLanguageVersion();
 		
 		ApplicationLogger.separator();
-		ApplicationLogger.logInfo(msg);
+		ApplicationLogger.logDebug(msg);
 		ApplicationLogger.separator();
 	}
 	
